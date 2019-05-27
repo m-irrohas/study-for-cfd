@@ -11,19 +11,21 @@ program main
     real,dimension(100)::u
     real,dimension(100)::u_init
     real,dimension(100)::u_
-    integer num, nlast, i, j
-    real x_min, x_max, u1, u2, a, cfl, dx, dt ,l_x, x_i
+    integer num, n_step, i, j
+    real x_min, x_max, u1, u2, a, cfl, dx, dt ,l_x, x_i, c, lx
     ! 格子の最大点と最小点
     x_min = -5.0
     x_max = 5.0
     num = 100 !刻み数
 
     ! その他
-    nlast = 10
-    cfl = 0.5
-    dx = (x_max-x_min)/num
-    l_x = dt*a*nlast
-
+    cfl = 0.5 ! = c*(dt/dx)
+    dx = (x_max-x_min)/num !刻みから逆算
+    dt = 1
+    c = cfl*dx/dt !クーラン数から逆算
+    lx = 2.0
+    n_step = int(lx/dt/c) !移動距離から逆算
+    print '(I5)', n_step
     ! 格子
     x_i = x_min
     x(1) = x_i
@@ -72,7 +74,8 @@ contains
         !出力ファイル
         open(20, file=output, status='replace')
         write (20,*) (x(i), i=1,num)
-        do j=1, nlast !時間ステップ
+        write(20,*) (u_init(i), i=1,num)
+        do j=1, n_step !時間ステップ
             do i=2,num-1 !位置
                 u(i) = u(i)-cfl/2*(u(i+1)-u(i-1))
             end do

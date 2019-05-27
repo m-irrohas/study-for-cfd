@@ -5,7 +5,7 @@ import pandas as pd
 import pathlib
 import glob
 
-def visualize(filename, all_plot=True, save_fig=True):
+def visualize(filename, all_plot=False, save_fig=True):
     """結果をプロットするだけ
     Arg:
         filename(str) <= .csv
@@ -28,10 +28,14 @@ def visualize(filename, all_plot=True, save_fig=True):
         for u in U:
             plt.plot(X,u)
     else:
-        pass #とりあえず
+        u_start = U[0]
+        u_end = U[-1]
+        plt.plot(X,u_start, label="initial")
+        plt.plot(X, u_end, label="end")
 
     file_path = pathlib.Path(filename)
     file_stem = file_path.stem
+    plt.legend()
     if save_fig:
         plt.savefig(file_stem+".png")
     plt.show()
