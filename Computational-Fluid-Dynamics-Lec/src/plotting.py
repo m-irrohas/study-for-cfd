@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import csv
 import pandas as pd
 import pathlib
+import glob
 
 def visualize(filename, all_plot=True, save_fig=True):
     """結果をプロットするだけ
@@ -28,7 +29,7 @@ def visualize(filename, all_plot=True, save_fig=True):
             plt.plot(X,u)
     else:
         pass #とりあえず
-        
+
     file_path = pathlib.Path(filename)
     file_stem = file_path.stem
     if save_fig:
@@ -36,7 +37,8 @@ def visualize(filename, all_plot=True, save_fig=True):
     plt.show()
     return None
 
-ftcs1 = "../output/ftcs1.csv"
-ftcs2 = "../output/ftcs2.csv"
-visualize(ftcs1)
-visualize(ftcs2)
+now_path = pathlib.Path.cwd()
+ftcs1_path = now_path/"output"/"ftcs1.csv"
+visualize(ftcs1_path)
+ftcs2_path = now_path/"output"/"ftcs2.csv"
+visualize(ftcs2_path)
