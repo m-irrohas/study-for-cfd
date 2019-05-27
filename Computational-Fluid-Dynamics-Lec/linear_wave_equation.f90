@@ -5,9 +5,9 @@ program main
     real,dimension(100)::u
     real,dimension(100)::u_init
     real,dimension(100)::u_
-    ! 格子の最大点と最小点
     integer num, nlast, i, j
     real x_min, x_max, u1, u2, a, cfl, dx, dt ,l_x, x_i
+    ! 格子の最大点と最小点
     x_min = -5.0
     x_max = 5.0
     num = 100
@@ -18,7 +18,7 @@ program main
 
     ! その他
     a = 1.0
-    nlast = 3
+    nlast = 10
     cfl = 0.5
     dx = (x_max-x_min)/num
     dt = 0.2
@@ -27,7 +27,7 @@ program main
     x_i = x_min
     x(1) = x_i
     do i=1, num
-        x_i = x_i + dx*i
+        x_i = x_i + dx
         x(i) = x_i
     end do
 
