@@ -2,13 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import csv
 import pandas as pd
+import pathlib
 
 def visualize(filename, all_plot=True, save_fig=True):
     """結果をプロットするだけ
     Arg:
-        filename(str)
+        filename(str) <= .csv
     Return:
-        None
+        filename(のstem).png <= (save_fig==True)
+        None <= (save_fig==False)
     """
     rows = []
     with open(filename, mode="r") as f:
@@ -18,7 +20,7 @@ def visualize(filename, all_plot=True, save_fig=True):
             row = list(map(float, row))
             rows.append(row)
     
-    print(rows)
+    plt.clf()
     X = rows[0]
     U = rows[1:]
     if all_plot:
@@ -26,10 +28,15 @@ def visualize(filename, all_plot=True, save_fig=True):
             plt.plot(X,u)
     else:
         pass #とりあえず
+        
+    file_path = pathlib.Path(filename)
+    file_stem = file_path.stem
     if save_fig:
-        plt.savefig("./output/ftcs_v1.png")
+        plt.savefig(file_stem+".png")
     plt.show()
-    
     return None
 
-visualize("test.csv")
+ftcs1 = "../output/ftcs1.csv"
+ftcs2 = "../output/ftcs2.csv"
+visualize(ftcs1)
+visualize(ftcs2)
