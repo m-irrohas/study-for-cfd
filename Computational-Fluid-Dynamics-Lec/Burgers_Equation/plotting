@@ -5,14 +5,18 @@ import pandas as pd
 import pathlib
 import glob
 
-def visualize(filename, all_plot=False, save_fig=True):
+def visualize(filename, all_plot=False, save_fig=True, num_plot=3):
     """結果をプロットするだけ
     Arg:
         filename(str) <= .csv
+        all_plot(bool) 全部プロットするかどうか
+        save_fig(bool) figを保存するかどうか
+        num_plot(int) プロット数(2以上)
     Return:
         filename(のstem).png <= (save_fig==True)
         None <= (save_fig==False)
     """
+    assert num_plot >= 2, "num_plotは3以上"
     rows = []
     corrects = []
     with open(filename, mode="r") as f:
@@ -32,18 +36,31 @@ def visualize(filename, all_plot=False, save_fig=True):
         u_start = U[0]
         u_end = U[-1]
         plt.plot(X,u_start, label="initial")
+        if num_plot >= 3:
+            other_plot = num_plot-2
+            point = int(len(U)//(other_plot+1))
+            for i in range(other_plot):
+                point_i = point*(i+1)
+                plt.plot(X, U[point_i], label="point: "+str(i+1)+"/"+str(num_plot-1))
         plt.plot(X, u_end, label="end")
-
+        
     file_path = pathlib.Path(filename)
     file_stem = file_path.stem
     plt.legend()
     if save_fig:
-        plt.savefig("Burgers_Equation/output/"+file_stem+".png")
+        plt.savefig("./output/"+file_stem+".png")
     else:
         pass
     plt.show()
     return None
 
 now_path = pathlib.Path.cwd()
-godunov_path = now_path/"Burgers_Equation"/"output"/"godunov1.csv"
-visualize(godunov_path, all_plot=False, save_fig=True)
+
+godunov1_path = now_path/"output"/"godunov1.csv"
+visualize(godunov1_path, all_plot=False, save_fig=True, num_plot=2)
+godunov2_path = now_path/"output"/"godunov2.csv"
+visualize(godunov2_path, all_plot=False, save_fig=True, num_plot=4)
+engquist_osher1_path = now_path/"output"/"engquist_osher1.csv"
+visualize(engquist_osher1_path, all_plot=False, save_fig=True, num_plot=2)
+engquist_osher2_path = now_path/"output"/"engquist_osher2.csv"
+visualize(engquist_osher2_path, all_plot=False, save_fig=True, num_plot=4)
